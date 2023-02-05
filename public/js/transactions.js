@@ -1,20 +1,21 @@
 const myModal = new bootstrap.Modal("#transaction-modal");
 let logged = sessionStorage.getItem("logged");
 const session = localStorage.getItem("session");
-
 let data = {
     transactions: []
 };
 
-document.getElementById("button-logout").addEventListener("click", logout);
+checkLogged();
 
-//ADICIONAR LANÇAMENTOS
-document.getElementById("transaction-form").addEventListener("submit", function(e) {
+document.getElementById("logout-button").addEventListener("click", logout);
+
+//ADICIONAR LANCAMENTO
+document.getElementById("transaction-form").addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const value = parseFloat(document.getElementById("value-input").value);
-    const description = document.getElementById("description-input").value;
-    const date = document.getElementById("date-input").value;
+    const value = parseFloat(document.getElementById('value-input').value);
+    const description = document.getElementById('description-input').value;
+    const date = document.getElementById('date-input').value;
     const type = document.querySelector('input[name="type-input"]:checked').value;
 
     data.transactions.unshift({
@@ -28,10 +29,8 @@ document.getElementById("transaction-form").addEventListener("submit", function(
     getTransactions();
 
     alert("Lançamento adicionado com sucesso.");
-    
-});
 
-checkLogged();
+});
 
 function checkLogged() {
     if(session) {
@@ -40,8 +39,8 @@ function checkLogged() {
     }
 
     if(!logged) {
-        window.location.href = "index.html";
-        return
+        window.location.href = 'index.html';
+        return;
     }
 
     const dataUser = localStorage.getItem(logged);
@@ -50,24 +49,25 @@ function checkLogged() {
     }
 
     getTransactions();
+
 }
 
 function logout() {
     sessionStorage.removeItem("logged");
     localStorage.removeItem("session");
 
-    window.location.href = "index.html";
+    window.location.href = 'index.html';
 }
 
 function getTransactions() {
     const transactions = data.transactions;
     let transactionsHtml = ``;
 
-    if(transactions.lenght) {
+    if(transactions.length) {
         transactions.forEach((item) => {
             let type = "Entrada";
 
-            if(item.type === "2") {
+            if(item.type === 2) {
                 type = "Saída";
             }
 
@@ -78,11 +78,11 @@ function getTransactions() {
                     <td>${type}</td>
                     <td>${item.description}</td>
                 </tr>
-            `
-        })
-    }
+            `;
+        });
 
-    document.getElementById("transactions-list").innerHTML = transactionsHtml;
+        document.getElementById('transactions-list').innerHTML = transactionsHtml;
+    }
 }
 
 function saveData(data) {
